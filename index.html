@@ -8,9 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Oswald', sans-serif;
@@ -23,7 +21,7 @@
       min-height: 100vh;
       margin: 0;
       padding: 20px;
-      overflow: hidden;
+      overflow-x: hidden;
       color: #fff;
       text-align: center;
     }
@@ -53,7 +51,7 @@
       100% { transform: rotate(360deg); }
     }
 
-    .social-links {
+    .container {
       width: 90%;
       max-width: 900px;
       background: rgba(0, 0, 0, 0.7);
@@ -61,11 +59,7 @@
       padding: 40px 30px;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
       z-index: 1;
-      transition: transform 0.3s ease;
-    }
-
-    .social-links:hover {
-      transform: perspective(1200px) scale(1.02) rotateX(4deg) rotateY(-4deg);
+      position: relative;
     }
 
     .profile-pic {
@@ -77,21 +71,12 @@
       border: 4px solid rgba(255, 255, 255, 0.5);
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
       background-color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .profile-pic img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
-      transition: transform 0.4s ease-in-out;
-    }
-
-    .profile-pic img:hover {
-      transform: scale(1.05) rotate(2deg);
     }
 
     h1 {
@@ -107,45 +92,25 @@
       margin-bottom: 25px;
     }
 
-    a {
+    .btn {
       text-decoration: none;
       display: inline-block;
-      margin: 10px 10px;
+      margin: 10px;
       padding: 12px 28px;
       border-radius: 50px;
       color: white;
       font-size: 18px;
       background-color: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
       box-shadow: 0 0 8px #fff3;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.3s ease;
     }
 
-    a i {
+    .btn i {
       margin-right: 10px;
     }
 
-    a::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(120deg, #fff, transparent, #fff);
-      opacity: 0.1;
-      transform: rotate(45deg);
-      animation: wave 3s linear infinite;
-    }
-
-    @keyframes wave {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
-
-    a:hover {
+    .btn:hover {
       transform: scale(1.07);
       box-shadow: 0 0 15px #fff8, 0 0 30px #fff4;
     }
@@ -155,59 +120,82 @@
     .telegram { background-color: #0088cc; }
     .linkedin { background-color: #0077b5; }
 
+    .project-card {
+      margin-top: 40px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 20px rgba(255,255,255,0.1), 0 0 40px rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .project-card h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .project-card h3 {
+      font-size: 24px;
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    .project-card p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.9);
+      max-width: 700px;
+      margin: auto;
+    }
+
     .made-by {
       font-size: 15px;
-      margin-top: 25px;
+      margin-top: 30px;
       color: rgba(255, 255, 255, 0.75);
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     }
 
     @media (max-width: 600px) {
-      .social-links {
-        padding: 25px 20px;
-      }
-
-      .bio {
-        font-size: 16px;
-      }
-
-      a {
-        font-size: 16px;
-        padding: 10px 20px;
-      }
+      .container { padding: 25px 20px; }
+      .bio { font-size: 16px; }
+      .btn { font-size: 16px; padding: 10px 20px; }
     }
   </style>
 </head>
 <body>
-  <div class="social-links">
+  <div class="container">
     <div class="profile-pic">
       <img src="/ChatGPT Image Jun 16, 2025, 10_40_23 AM.png" alt="Profile Picture" />
     </div>
+
     <div class="bio">
       <strong>Somesh Tiwari</strong><br />
       I am currently pursuing a B-TECH degree in Computer Science and Engineering (IT) with a strong passion for web development. I am dedicated to mastering all the essential tools and technologies in web development, continually expanding my skills to create modern, responsive, and user-friendly websites.
     </div>
-    <div style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 0 20px rgba(255,255,255,0.2);">
-  <h2 style="font-size: 28px; color: #fff; margin-bottom: 10px;">🚀 My Projects</h2>
-  
-  <div style="margin-bottom: 15px;">
-    <h3 style="font-size: 22px; color: #ffd700;">📤 QuickShare</h3>
-    <p style="font-size: 16px; color: rgba(255,255,255,0.9); line-height: 1.5;">
-      A blazing fast file sharing platform built using Node.js, MongoDB, Cloudinary, and Express.
-      It generates a sharable link instantly and deletes files after 24 hours.
-    </p>
-    <a href="https://github.com/Somesh520/Quickshare" target="_blank" style="background-color:#333;">🔗 GitHub Repo</a>
-    <a href="https://quickshare-piij.onrender.com/" target="_blank" style="background-color:#28a745;">🌐 Live Demo</a>
-  </div>
-</div>
 
-    <h1>Connect with Me</h1>
-    <a href="https://www.instagram.com/someshxd/" target="_blank" class="instagram"><i class="fab fa-instagram"></i> Instagram</a>
-    <a href="https://x.com/SOMESHTIWA60883" target="_blank" class="twitter"><i class="fab fa-twitter"></i> Twitter</a>
-    <a href="https://t.me/someshxd" target="_blank" class="telegram"><i class="fab fa-telegram"></i> Telegram</a>
-    <a href="https://www.linkedin.com/in/somesh-tiwari-236555322?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" class="linkedin"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    <div class="project-card">
+      <h2>🚀 <span style="color: #ff6ec4;">My Projects</span></h2>
+      <h3>📤 QuickShare</h3>
+      <p>
+        A blazing fast file sharing platform built using <b>Node.js</b>, <b>MongoDB</b>, <b>Cloudinary</b>, and <b>Express</b>.
+        Instantly generates shareable links and auto-deletes files after 24 hours!
+      </p>
+      <div style="margin-top: 20px;">
+        <a href="https://github.com/Somesh520/Quickshare" target="_blank" class="btn" style="background-color:#24292e;">
+          <i class="fab fa-github"></i> GitHub Repo
+        </a>
+        <a href="https://quickshare-piij.onrender.com/" target="_blank" class="btn" style="background-color:#28a745;">
+          🌐 Live Demo
+        </a>
+      </div>
+    </div>
 
-    <div class="made-by">Made by Somesh ❤️</div>
+    <h1 style="margin-top: 50px;">Connect with Me</h1>
+    <a href="https://www.instagram.com/someshxd/" target="_blank" class="btn instagram"><i class="fab fa-instagram"></i> Instagram</a>
+    <a href="https://x.com/SOMESHTIWA60883" target="_blank" class="btn twitter"><i class="fab fa-twitter"></i> Twitter</a>
+    <a href="https://t.me/someshxd" target="_blank" class="btn telegram"><i class="fab fa-telegram"></i> Telegram</a>
+    <a href="https://www.linkedin.com/in/somesh-tiwari-236555322" target="_blank" class="btn linkedin"><i class="fab fa-linkedin"></i> LinkedIn</a>
+
+    <div class="made-by">Made with ❤️ by Somesh</div>
   </div>
 </body>
 </html>
