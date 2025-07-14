@@ -11,7 +11,7 @@ Welcome to my personal developer portfolio! I'm **Somesh Tiwari**, a passionate 
 - 🔭 I’m currently working on: Full-stack projects, web tools, and productivity apps  
 - 🌱 Learning: Advanced Backend (Node.js, Express.js, MongoDB)  
 - 💡 Passionate about: Clean UI, automation, and building helpful digital tools  
-- 📫 How to reach me: [someshtiwari532@gmail.com]([someshtiwari532@gmail.com)  
+- 📫 How to reach me: someshtiwari532@gmail.com  
 - 💼 LinkedIn: [https://www.linkedin.com/in/somesh-tiwari-236555322/](https://www.linkedin.com/in/somesh-tiwari-236555322/)
 
 ---
