@@ -38,10 +38,7 @@
       animation: starRotate 60s linear infinite;
       z-index: -1;
     }
-    @keyframes starRotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+    @keyframes starRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .container {
       width: 100%;
       max-width: 950px;
@@ -131,7 +128,7 @@
       background: rgba(255,255,255,0.1);
       border-radius: 15px;
       padding: 20px;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
     .stat-card span {
@@ -153,7 +150,6 @@
       I am a B-TECH student in Computer Science (IT) with a strong passion for web development. I am dedicated to mastering the essential tools and technologies needed to create modern, responsive, and user-friendly websites.
     </div>
 
-    <!-- Projects -->
     <div class="projects-section">
       <h2>🚀 My Projects</h2>
       <div class="projects-grid">
@@ -184,15 +180,11 @@
       </div>
     </div>
 
-    <!-- LeetCode Stats -->
     <div class="leetcode-stats">
       <h2>💻 LeetCode Stats</h2>
-      <div id="leetcode-data">
-        <p>Fetching stats...</p>
-      </div>
+      <div id="leetcode-data"><p>Fetching stats...</p></div>
     </div>
 
-    <!-- Social Links -->
     <div class="social-links">
       <h2>Connect with Me</h2>
       <a href="https://www.instagram.com/someshxd/" target="_blank" class="btn instagram"><i class="fab fa-instagram"></i> Instagram</a>
@@ -204,14 +196,51 @@
     <div class="made-by">Made with ❤️ by Somesh</div>
   </div>
 
-  <!-- LeetCode API Integration -->
   <script>
     async function loadLeetCodeStats() {
       const container = document.getElementById("leetcode-data");
+      const query = `
+        query userProblemsSolved($username: String!) {
+          allQuestionsCount { difficulty count }
+          matchedUser(username: $username) {
+            problemsSolvedBeatsStats { difficulty percentage }
+            submitStatsGlobal { acSubmissionNum { difficulty count } }
+          }
+        }
+      `;
+      const variables = { username: "zsH7Gq2PBq" };
+
       try {
-        const res = await fetch("https://leetcode-stats-api.herokuapp.com/zsH7Gq2PBq");
-        const data = await res.json();
-        if (data.status === "success") {
+        const response = await fetch("https://leetcode.com/graphql", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, variables })
+        });
+        if (!response.ok) throw new Error("GraphQL error");
+        const { data } = await response.json();
+        const all = data.allQuestionsCount.find(i => i.difficulty === "All").count;
+        const easyQ = data.allQuestionsCount.find(i => i.difficulty === "Easy").count;
+        const medQ = data.allQuestionsCount.find(i => i.difficulty === "Medium").count;
+        const hardQ = data.allQuestionsCount.find(i => i.difficulty === "Hard").count;
+        const ac = data.matchedUser.submitStatsGlobal.acSubmissionNum;
+        const easy = ac.find(i => i.difficulty === "Easy").count;
+        const med = ac.find(i => i.difficulty === "Medium").count;
+        const hard = ac.find(i => i.difficulty === "Hard").count;
+        const beats = data.matchedUser.problemsSolvedBeatsStats;
+
+        container.innerHTML = `
+          <div class="stats-grid">
+            <div class="stat-card">Total Solved<span>${easy + med + hard}</span></div>
+            <div class="stat-card">Easy<span>${easy}/${easyQ}</span><small>Beats ${beats[0].percentage ?? 0}%</small></div>
+            <div class="stat-card">Medium<span>${med}/${medQ}</span><small>Beats ${beats[1].percentage ?? 0}%</small></div>
+            <div class="stat-card">Hard<span>${hard}/${hardQ}</span><small>Beats ${beats[2].percentage ?? 0}%</small></div>
+            <div class="stat-card">Total Questions<span>${all}</span></div>
+          </div>`;
+      } catch (err) {
+        console.warn("LeetCode GraphQL blocked, using fallback.");
+        try {
+          const res = await fetch("https://leetcode-stats-api.herokuapp.com/zsH7Gq2PBq");
+          const data = await res.json();
           container.innerHTML = `
             <div class="stats-grid">
               <div class="stat-card">Total Solved<span>${data.totalSolved}</span></div>
@@ -219,14 +248,10 @@
               <div class="stat-card">Medium<span>${data.mediumSolved}/${data.totalMedium}</span></div>
               <div class="stat-card">Hard<span>${data.hardSolved}/${data.totalHard}</span></div>
               <div class="stat-card">Acceptance<span>${data.acceptanceRate}%</span></div>
-              <div class="stat-card">Ranking<span>#${data.ranking}</span></div>
-            </div>
-          `;
-        } else {
-          container.innerHTML = `<p>Unable to fetch LeetCode data 😢</p>`;
+            </div>`;
+        } catch {
+          container.innerHTML = "<p>Unable to load LeetCode data 😢</p>";
         }
-      } catch (err) {
-        container.innerHTML = `<p>Error loading stats 😢</p>`;
       }
     }
     loadLeetCodeStats();
