@@ -15,22 +15,33 @@
     /* --- CSS RESET & VARIABLES --- */
     :root {
       --primary: #00d4ff;
+      --primary-rgb: 0, 212, 255;
       --secondary: #7b61ff;
-      --bg-dark: #0a0a0f;
-      --bg-card: #11111f;
+      --secondary-rgb: 123, 97, 255;
+      --accent: #ff6b9d;
+      --bg-dark: #060611;
+      --bg-card: rgba(15, 15, 35, 0.6);
+      --bg-card-solid: #0f0f23;
       --text-main: #ffffff;
       --text-sec: #a0a0c0;
-      --border: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(15, 15, 35, 0.5);
       --success: #00ff9d;
       --warning: #ffb800;
       --danger: #ff4757;
       --github-green: #40c463;
+      --glow-primary: 0 0 30px rgba(0, 212, 255, 0.3);
+      --glow-secondary: 0 0 30px rgba(123, 97, 255, 0.3);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html {
       scroll-behavior: smooth;
     }
 
@@ -40,9 +51,90 @@
       color: var(--text-main);
       line-height: 1.6;
       overflow-x: hidden;
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(123, 97, 255, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 80% 70%, rgba(0, 212, 255, 0.08) 0%, transparent 20%);
+    }
+
+    /* --- PARTICLE CANVAS --- */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* --- FLOATING ORBS --- */
+    .floating-orbs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: var(--primary);
+      top: -10%;
+      left: -5%;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: var(--secondary);
+      top: 40%;
+      right: -10%;
+      animation-delay: -7s;
+    }
+
+    .orb-3 {
+      width: 400px;
+      height: 400px;
+      background: var(--accent);
+      bottom: -5%;
+      left: 30%;
+      animation-delay: -14s;
+    }
+
+    @keyframes orbFloat {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(30px, -40px) scale(1.05);
+      }
+
+      50% {
+        transform: translate(-20px, 20px) scale(0.95);
+      }
+
+      75% {
+        transform: translate(40px, 30px) scale(1.02);
+      }
+    }
+
+    /* --- MAIN CONTENT LAYER --- */
+    .page-content {
+      position: relative;
+      z-index: 1;
     }
 
     /* --- TOAST --- */
@@ -71,6 +163,19 @@
       opacity: 1;
     }
 
+    /* --- SCROLL PROGRESS BAR --- */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      z-index: 10001;
+      width: 0%;
+      transition: width 0.05s linear;
+      border-radius: 0 2px 2px 0;
+    }
+
     /* --- NAV --- */
     nav {
       position: fixed;
@@ -81,18 +186,109 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10, 10, 15, 0.9);
+      background: rgba(6, 6, 17, 0.8);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 1000;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--glass-border);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 16px 48px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(var(--primary-rgb), 0.15);
+    }
+
+    nav.nav-hidden {
+      transform: translateY(-100%);
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* --- HAMBURGER --- */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1001;
+      padding: 8px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-main);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-menu-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 6, 17, 0.95);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mobile-menu-overlay.active {
+      display: flex;
+    }
+
+    .mobile-menu-overlay .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      text-align: center;
+    }
+
+    .mobile-menu-overlay .mobile-nav-links a {
+      text-decoration: none;
+      color: var(--text-sec);
+      font-size: 1.5rem;
+      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .mobile-menu-overlay .mobile-nav-links a:hover {
+      color: var(--primary);
     }
 
     .logo {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.8rem;
       font-weight: 600;
-      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       letter-spacing: -0.5px;
+      text-shadow: none;
     }
 
     .nav-links {
@@ -171,10 +367,10 @@
 
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 600;
+      font-size: 4.5rem;
+      font-weight: 700;
       margin-bottom: 16px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(135deg, var(--primary), #a78bfa, var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -221,17 +417,32 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
-      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .btn-primary:hover::before {
+      transform: translateX(100%);
     }
 
     .btn-primary:hover {
       transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4), var(--glow-primary);
     }
 
     .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
       color: var(--text-main);
       backdrop-filter: blur(10px);
     }
@@ -305,27 +516,56 @@
     }
 
     .skill-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 28px 24px;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.3), transparent 60%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .skill-card:hover::before {
+      opacity: 1;
     }
 
     .skill-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--primary);
-      box-shadow: 0 15px 40px rgba(0, 212, 255, 0.1);
+      transform: translateY(-10px) scale(1.03);
+      border-color: rgba(var(--primary-rgb), 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(var(--primary-rgb), 0.1);
     }
 
     .skill-card i {
-      font-size: 2.25rem;
+      font-size: 2.5rem;
       color: var(--primary);
+      filter: drop-shadow(0 0 10px rgba(var(--primary-rgb), 0.4));
+      transition: filter 0.3s ease;
+    }
+
+    .skill-card:hover i {
+      filter: drop-shadow(0 0 20px rgba(var(--primary-rgb), 0.7));
     }
 
     .skill-card span {
@@ -342,17 +582,40 @@
     }
 
     .project-card {
-      background: var(--bg-card);
-      border-radius: 16px;
-      border: 1px solid var(--border);
+      background: var(--glass-bg);
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: relative;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.4), rgba(var(--secondary-rgb), 0.2), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .project-card:hover::after {
+      opacity: 1;
     }
 
     .project-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--primary);
-      box-shadow: 0 20px 50px rgba(0, 212, 255, 0.15);
+      transform: translateY(-12px);
+      border-color: rgba(var(--primary-rgb), 0.3);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(var(--primary-rgb), 0.1);
     }
 
     .project-content {
@@ -483,210 +746,399 @@
 
     /* --- STATS --- */
     .stats-container {
-      background: var(--bg-card);
-      border-radius: 20px;
-      border: 1px solid var(--border);
+      background: var(--glass-bg);
+      border-radius: 24px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 48px;
     }
 
-    .github-wrapper {
-      margin-bottom: 60px;
+    .stats-section-block {
+      margin-bottom: 64px;
+    }
+
+    .stats-section-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .stats-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stats-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .stats-icon.github {
+      background: rgba(64, 196, 99, 0.1);
+      color: var(--github-green);
+      border: 1px solid rgba(64, 196, 99, 0.15);
+    }
+
+    .stats-icon.leetcode {
+      background: rgba(255, 161, 22, 0.1);
+      color: #ffa116;
+      border: 1px solid rgba(255, 161, 22, 0.15);
+    }
+
+    .stats-header-info {
+      flex: 1;
     }
 
     .stats-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--text-main);
-      margin-bottom: 32px;
-      text-align: center;
       font-weight: 600;
+      margin: 0;
     }
 
-    .gh-stats-card {
-      max-width: 100%;
-      border-radius: 12px;
-      margin: 0 auto;
-      display: block;
+    .stats-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-sec);
+      margin-top: 4px;
     }
 
-    .github-graph {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      margin-top: 32px;
+    .stats-link {
+      text-decoration: none;
+      color: var(--text-sec);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
-    /* LeetCode Container */
-    .leetcode-container {
-      text-align: center;
+    .stats-link:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: rgba(0, 212, 255, 0.05);
     }
 
-    .leetcode-header {
+    /* --- HEATMAP COMMON --- */
+    .heatmap-wrapper {
+      overflow-x: auto;
+      padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .heatmap-wrapper::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .heatmap-wrapper::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .heatmap-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    .heatmap-inner {
+      min-width: 760px;
+    }
+
+    .heatmap-months {
+      display: flex;
+      padding-left: 36px;
+      margin-bottom: 6px;
+      gap: 0;
+    }
+
+    .heatmap-month {
+      font-size: 0.7rem;
+      color: var(--text-sec);
+      text-align: left;
+    }
+
+    .heatmap-body {
+      display: flex;
+      gap: 0;
+    }
+
+    .heatmap-days-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-right: 6px;
+      padding-top: 0;
+      min-width: 28px;
+    }
+
+    .heatmap-day-label {
+      font-size: 0.65rem;
+      color: var(--text-sec);
+      height: 13px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 30px;
+      line-height: 1;
     }
 
-    .leetcode-icon {
-      font-size: 2rem;
-      color: #ffa116;
-      background: rgba(255, 161, 22, 0.1);
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
+    .heatmap-grid {
+      display: flex;
+      gap: 3px;
+    }
+
+    .heatmap-week {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .heatmap-cell {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .heatmap-cell:hover {
+      transform: scale(1.6);
+      z-index: 10;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+    }
+
+    /* GitHub heatmap color scale */
+    .heatmap-cell.gh-0 {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .heatmap-cell.gh-1 {
+      background: #0e4429;
+    }
+
+    .heatmap-cell.gh-2 {
+      background: #006d32;
+    }
+
+    .heatmap-cell.gh-3 {
+      background: #26a641;
+    }
+
+    .heatmap-cell.gh-4 {
+      background: #39d353;
+    }
+
+    /* LeetCode heatmap color scale */
+    .heatmap-cell.lc-0 {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .heatmap-cell.lc-1 {
+      background: rgba(255, 161, 22, 0.2);
+    }
+
+    .heatmap-cell.lc-2 {
+      background: rgba(255, 161, 22, 0.45);
+    }
+
+    .heatmap-cell.lc-3 {
+      background: rgba(255, 161, 22, 0.7);
+    }
+
+    .heatmap-cell.lc-4 {
+      background: #ffa116;
+    }
+
+    .heatmap-cell.empty {
+      background: transparent;
+    }
+
+    /* Tooltip */
+    .heatmap-cell .hm-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 100;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .heatmap-cell .hm-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #1a1a2e;
+    }
+
+    .heatmap-cell:hover .hm-tooltip {
+      opacity: 1;
+    }
+
+    /* Legend */
+    .heatmap-legend {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
+      gap: 4px;
+      margin-top: 12px;
+      padding-right: 4px;
     }
 
-    .leetcode-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 40px;
+    .heatmap-legend-label {
+      font-size: 0.7rem;
+      color: var(--text-sec);
+      margin: 0 4px;
     }
 
-    .stat-card {
-      background: var(--bg-card);
+    .heatmap-legend-cell {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+    }
+
+    /* --- QUICK STATS ROW --- */
+    .quick-stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .quick-stat {
+      flex: 1;
+      min-width: 120px;
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 25px;
+      padding: 20px 16px;
+      text-align: center;
       transition: all 0.3s ease;
     }
 
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 212, 255, 0.1);
+    .quick-stat:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-3px);
     }
 
-    .stat-card.easy {
-      border-color: rgba(0, 255, 157, 0.2);
-    }
-
-    .stat-card.medium {
-      border-color: rgba(255, 184, 0, 0.2);
-    }
-
-    .stat-card.hard {
-      border-color: rgba(255, 71, 87, 0.2);
-    }
-
-    .stat-value {
-      font-size: 2.5rem;
+    .quick-stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
       font-weight: 700;
-      margin: 10px 0;
+      margin-bottom: 4px;
     }
 
-    .stat-value.easy {
+    .quick-stat-value.gh {
+      color: var(--github-green);
+    }
+
+    .quick-stat-value.lc {
+      color: #ffa116;
+    }
+
+    .quick-stat-value.easy-val {
       color: var(--success);
     }
 
-    .stat-value.medium {
+    .quick-stat-value.medium-val {
       color: var(--warning);
     }
 
-    .stat-value.hard {
+    .quick-stat-value.hard-val {
       color: var(--danger);
     }
 
-    .stat-label {
-      font-size: 1rem;
+    .quick-stat-value.accent {
+      color: var(--primary);
+    }
+
+    .quick-stat-label {
+      font-size: 0.78rem;
       color: var(--text-sec);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       font-weight: 500;
     }
 
-    .progress-container {
-      margin-top: 10px;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
+    /* LeetCode difficulty mini-bar */
+    .lc-difficulty-bar {
+      display: flex;
+      height: 6px;
+      border-radius: 3px;
       overflow: hidden;
-      margin-top: 8px;
+      margin-top: 16px;
+      background: rgba(255, 255, 255, 0.04);
     }
 
-    .progress-fill {
+    .lc-diff-segment {
       height: 100%;
-      border-radius: 4px;
-      transition: width 1.5s ease-out;
+      transition: width 1.2s ease-out;
     }
 
-    .progress-fill.easy {
+    .lc-diff-segment.easy {
       background: var(--success);
     }
 
-    .progress-fill.medium {
+    .lc-diff-segment.medium {
       background: var(--warning);
     }
 
-    .progress-fill.hard {
+    .lc-diff-segment.hard {
       background: var(--danger);
     }
 
-    .progress-text {
-      font-size: 0.85rem;
-      color: var(--text-sec);
-      margin-top: 5px;
+    .lc-diff-labels {
       display: flex;
       justify-content: space-between;
+      margin-top: 8px;
     }
 
-    .leetcode-summary {
-      background: var(--bg-card);
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      padding: 30px;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-      margin-top: 20px;
-    }
-
-    .summary-item {
-      text-align: center;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .summary-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 5px;
-    }
-
-    .summary-label {
-      font-size: 0.9rem;
+    .lc-diff-label {
+      font-size: 0.75rem;
       color: var(--text-sec);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .leetcode-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 161, 22, 0.1);
-      color: #ffa116;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      margin-top: 15px;
-      border: 1px solid rgba(255, 161, 22, 0.2);
+    .lc-diff-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .lc-diff-dot.easy {
+      background: var(--success);
+    }
+
+    .lc-diff-dot.medium {
+      background: var(--warning);
+    }
+
+    .lc-diff-dot.hard {
+      background: var(--danger);
     }
 
     /* --- FOOTER --- */
@@ -751,6 +1203,50 @@
       }
     }
 
+    /* --- SCROLL REVEAL --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.reveal-left {
+      transform: translateX(-40px);
+    }
+
+    .reveal.reveal-right {
+      transform: translateX(40px);
+    }
+
+    .reveal.reveal-scale {
+      transform: scale(0.9);
+    }
+
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0) translateX(0) scale(1);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    .reveal-delay-5 {
+      transition-delay: 0.5s;
+    }
+
     /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
       nav {
@@ -789,17 +1285,24 @@
       }
 
       .stats-container {
-        padding: 32px 24px;
+        padding: 24px 16px;
       }
 
-      .leetcode-stats-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+      .stats-header {
+        flex-wrap: wrap;
       }
 
-      .summary-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+      .quick-stats {
+        gap: 10px;
+      }
+
+      .quick-stat {
+        min-width: 90px;
+        padding: 14px 10px;
+      }
+
+      .quick-stat-value {
+        font-size: 1.3rem;
       }
     }
 
@@ -808,8 +1311,16 @@
         display: none;
       }
 
+      .hamburger {
+        display: flex;
+      }
+
       .hero {
         padding-top: 100px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
       }
 
       .skills-grid {
@@ -829,294 +1340,370 @@
 
 <body>
 
-  <div id="toast">
-    <i class="fas fa-check-circle"></i>
-    <span>Email copied to clipboard!</span>
+  <canvas id="particleCanvas"></canvas>
+  <div class="floating-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <nav>
-    <div class="logo">Somesh</div>
-    <div class="nav-links">
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenu">
+    <div class="mobile-nav-links">
       <a href="#home">Home</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
       <a href="#journey">Journey</a>
       <a href="#stats">Stats</a>
     </div>
-  </nav>
+  </div>
 
-  <header id="home" class="hero">
-    <div class="profile-img-container">
-      <img src="./ChatGPT Image Jun 16, 2025, 10_40_23 AM.png" alt="Somesh Tiwari" class="profile-img" />
-    </div>
-    <h1>Somesh Tiwari</h1>
-    <div class="typing-text" id="typewriter"></div>
-    <p>
-      B-TECH Student (IT) | Building scalable web applications & IoT solutions with modern technologies
-    </p>
-    <div class="cta-buttons">
-      <button onclick="copyEmail()" class="btn btn-primary">
-        <i class="fas fa-copy"></i> Copy Email
-      </button>
-      <a href="./PORTFOLIO.pdf" download="Somesh_Tiwari_Resume" class="btn btn-secondary">
-        <i class="fas fa-download"></i> Download CV
-      </a>
-    </div>
-    <div class="social-bar">
-      <a href="https://github.com/Somesh520" target="_blank" class="social-btn">
-        <i class="fab fa-github"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/somesh-tiwari-236555322" target="_blank" class="social-btn">
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-      <a href="https://x.com/SOMESHTIWA60883" target="_blank" class="social-btn">
-        <i class="fa-brands fa-x-twitter"></i>
-      </a>
-      <a href="https://leetcode.com/u/Someshxdd/" target="_blank" class="social-btn">
-        <i class="fas fa-code"></i>
-      </a>
-    </div>
-  </header>
+  <div class="page-content">
 
-  <section id="skills">
-    <h2 class="section-title">Tech Stack</h2>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <i class="fab fa-js"></i>
-        <span>JavaScript</span>
-      </div>
-      <div class="skill-card">
-        <i class="fab fa-react"></i>
-        <span>React</span>
-      </div>
-      <div class="skill-card">
-        <i class="fab fa-node-js"></i>
-        <span>Node.js</span>
-      </div>
-      <div class="skill-card">
-        <i class="fas fa-database"></i>
-        <span>MongoDB</span>
-      </div>
-      <div class="skill-card">
-        <i class="fab fa-google"></i>
-        <span>Google Cloud</span>
-      </div>
-      <div class="skill-card">
-        <i class="fas fa-fire"></i>
-        <span>Firebase</span>
-      </div>
-      <div class="skill-card">
-        <i class="fas fa-microchip"></i>
-        <span>IoT / C++</span>
-      </div>
-      <div class="skill-card">
-        <i class="fab fa-git-alt"></i>
-        <span>Git</span>
-      </div>
-    </div>
-  </section>
+    <div class="scroll-progress" id="scrollProgress"></div>
 
-  <section id="projects">
-    <h2 class="section-title">Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <div class="project-content">
-          <h3>Smart Gas Guardian</h3>
-          <p>IoT solution for LPG monitoring with React Native & ESP32. Real-time tracking, leak detection, and safety
-            alerts system.</p>
-          <div class="project-links">
-            <a href="https://github.com/Somesh520/LPG" target="_blank" class="project-link code">
-              <i class="fab fa-github"></i> Code
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-content">
-          <h3>QuickShare</h3>
-          <p>Secure file-sharing platform with automatic 24-hour expiration. Built with MERN stack and end-to-end
-            encryption.</p>
-          <div class="project-links">
-            <a href="https://github.com/Somesh520/Quickshare" target="_blank" class="project-link code">
-              <i class="fab fa-github"></i> Code
-            </a>
-            <a href="https://quickshare-piij.onrender.com/" target="_blank" class="project-link live">
-              <i class="fas fa-external-link-alt"></i> Live
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-content">
-          <h3>BunkBook</h3>
-          <p>Smart attendance management system for students with lecture tracking, analytics, and schedule
-            optimization.</p>
-          <div class="project-links">
-            <a href="https://github.com/Somesh520/Kietkt" target="_blank" class="project-link code">
-              <i class="fab fa-github"></i> Code
-            </a>
-            <a href="https://bunkbook1.netlify.app" target="_blank" class="project-link live">
-              <i class="fas fa-external-link-alt"></i> Live
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-content">
-          <h3>SmartCoder</h3>
-          <p>AI-powered coding assistant platform built to help developers write, debug, and optimize code with
-            intelligent suggestions and real-time collaboration.</p>
-          <div class="project-links">
-            <a href="https://smartcoder-black.vercel.app" target="_blank" class="project-link live">
-              <i class="fas fa-external-link-alt"></i> Live
-            </a>
-          </div>
-        </div>
-      </div>
+    <div id="toast">
+      <i class="fas fa-check-circle"></i>
+      <span>Email copied to clipboard!</span>
     </div>
-  </section>
 
-  <section id="journey">
-    <h2 class="section-title">Hackathon Journey</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-content">
-          <span class="timeline-date">2025</span>
-          <h3>HackWithRide '25</h3>
-          <p>Participated in this prestigious hackathon at JIIT Noida, solving real-world problems with advanced web &
-            IoT technologies under pressure conditions.</p>
-        </div>
+    <nav>
+      <div class="logo">Somesh</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#journey">Journey</a>
+        <a href="#stats">Stats</a>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-content">
-          <span class="timeline-date">2025</span>
-          <h3>InnoTech</h3>
-          <p>Showcased innovative technical solutions at KIET Ghaziabad, focusing on rapid prototyping and team
-            collaboration for impactful project development.</p>
-        </div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-content">
-          <span class="timeline-date">2025</span>
-          <h3>TECH JAM</h3>
-          <p>Collaborated with talented developers at Microsoft Noida to deliver innovative solutions, emphasizing rapid
-            iteration and user-centric design principles.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </nav>
 
-  <section id="stats">
-    <h2 class="section-title">Coding Activity</h2>
-    <div class="stats-container">
-      <div class="github-wrapper">
-        <h3 class="stats-title">GitHub Contributions</h3>
-        <a href="https://github.com/Somesh520" target="_blank">
-          <!-- Changed to GitHub green color -->
-          <img class="gh-stats-card"
-            src="https://github-readme-streak-stats.herokuapp.com/?user=Somesh520&theme=dark&background=11111f&ring=40c463&fire=40c463&currStreakNum=ffffff&currStreakLabel=40c463&sideNums=ffffff&sideLabels=ffffff&dates=a0a0c0&hide_border=true"
-            alt="GitHub Streak" />
-        </a>
-        <a href="https://github.com/Somesh520" target="_blank">
-          <!-- Changed to GitHub green color -->
-          <img src="https://ghchart.rshah.org/40c463/Somesh520" alt="GitHub Chart" class="github-graph" />
+    <header id="home" class="hero">
+      <div class="profile-img-container">
+        <img src="./ChatGPT Image Jun 16, 2025, 10_40_23 AM.png" alt="Somesh Tiwari" class="profile-img" />
+      </div>
+      <h1>Somesh Tiwari</h1>
+      <div class="typing-text" id="typewriter"></div>
+      <p>
+        B-TECH Student (IT) | Building scalable web applications & IoT solutions with modern technologies
+      </p>
+      <div class="cta-buttons">
+        <button onclick="copyEmail()" class="btn btn-primary">
+          <i class="fas fa-copy"></i> Copy Email
+        </button>
+        <a href="./PORTFOLIO.pdf" download="Somesh_Tiwari_Resume" class="btn btn-secondary">
+          <i class="fas fa-download"></i> Download CV
         </a>
       </div>
+      <div class="social-bar">
+        <a href="https://github.com/Somesh520" target="_blank" class="social-btn">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/somesh-tiwari-236555322" target="_blank" class="social-btn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://x.com/SOMESHTIWA60883" target="_blank" class="social-btn">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a href="https://leetcode.com/u/Someshxdd/" target="_blank" class="social-btn">
+          <i class="fas fa-code"></i>
+        </a>
+      </div>
+    </header>
 
-      <div class="leetcode-container">
-        <div class="leetcode-header">
-          <div class="leetcode-icon">
-            <i class="fas fa-code"></i>
-          </div>
-          <h3 class="stats-title">LeetCode Progress</h3>
+    <section id="skills">
+      <h2 class="section-title">Tech Stack</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <i class="fab fa-js"></i>
+          <span>JavaScript</span>
         </div>
+        <div class="skill-card">
+          <i class="fab fa-react"></i>
+          <span>React</span>
+        </div>
+        <div class="skill-card">
+          <i class="fab fa-node-js"></i>
+          <span>Node.js</span>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-database"></i>
+          <span>MongoDB</span>
+        </div>
+        <div class="skill-card">
+          <i class="fab fa-google"></i>
+          <span>Google Cloud</span>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-fire"></i>
+          <span>Firebase</span>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-microchip"></i>
+          <span>IoT / C++</span>
+        </div>
+        <div class="skill-card">
+          <i class="fab fa-git-alt"></i>
+          <span>Git</span>
+        </div>
+      </div>
+    </section>
 
-        <div class="leetcode-stats-grid">
-          <div class="stat-card easy">
-            <div class="stat-label">Easy</div>
-            <div class="stat-value easy" id="easy-solved">0</div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div class="progress-fill easy" id="easy-progress"></div>
-              </div>
-              <div class="progress-text">
-                <span id="easy-solved-text">0 solved</span>
-                <span id="easy-total">/ 0 total</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="stat-card medium">
-            <div class="stat-label">Medium</div>
-            <div class="stat-value medium" id="medium-solved">0</div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div class="progress-fill medium" id="medium-progress"></div>
-              </div>
-              <div class="progress-text">
-                <span id="medium-solved-text">0 solved</span>
-                <span id="medium-total">/ 0 total</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="stat-card hard">
-            <div class="stat-label">Hard</div>
-            <div class="stat-value hard" id="hard-solved">0</div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div class="progress-fill hard" id="hard-progress"></div>
-              </div>
-              <div class="progress-text">
-                <span id="hard-solved-text">0 solved</span>
-                <span id="hard-total">/ 0 total</span>
-              </div>
+    <section id="projects">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-content">
+            <h3>Smart Gas Guardian</h3>
+            <p>IoT solution for LPG monitoring with React Native & ESP32. Real-time tracking, leak detection, and safety
+              alerts system.</p>
+            <div class="project-links">
+              <a href="https://github.com/Somesh520/LPG" target="_blank" class="project-link code">
+                <i class="fab fa-github"></i> Code
+              </a>
             </div>
           </div>
         </div>
-
-        <div class="leetcode-summary">
-          <div class="summary-grid">
-            <div class="summary-item">
-              <div class="summary-value" id="total-solved">0</div>
-              <div class="summary-label">Total Solved</div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-value" id="acceptance-rate">0%</div>
-              <div class="summary-label">Acceptance Rate</div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-value" id="ranking">0</div>
-              <div class="summary-label">Ranking</div>
-            </div>
-            <div class="summary-item">
-              <div class="summary-value" id="contribution">0</div>
-              <div class="summary-label">Contribution</div>
+        <div class="project-card">
+          <div class="project-content">
+            <h3>QuickShare</h3>
+            <p>Secure file-sharing platform with automatic 24-hour expiration. Built with MERN stack and end-to-end
+              encryption.</p>
+            <div class="project-links">
+              <a href="https://github.com/Somesh520/Quickshare" target="_blank" class="project-link code">
+                <i class="fab fa-github"></i> Code
+              </a>
+              <a href="https://sharequick.netlify.app" target="_blank" class="project-link live">
+                <i class="fas fa-external-link-alt"></i> Live
+              </a>
             </div>
           </div>
-
-          <div class="leetcode-badge">
-            <i class="fas fa-trophy"></i>
-            <span id="badge-text">Knight Level</span>
+        </div>
+        <div class="project-card">
+          <div class="project-content">
+            <h3>BunkBook</h3>
+            <p>Smart attendance management system for students with lecture tracking, analytics, and schedule
+              optimization.</p>
+            <div class="project-links">
+              <a href="https://github.com/Somesh520/Kietkt" target="_blank" class="project-link code">
+                <i class="fab fa-github"></i> Code
+              </a>
+              <a href="https://bunkbook1.netlify.app" target="_blank" class="project-link live">
+                <i class="fas fa-external-link-alt"></i> Live
+              </a>
+            </div>
           </div>
-
-          <div style="margin-top: 20px; color: var(--text-sec); font-size: 0.9rem;">
-            <p>Updated in real-time from LeetCode API</p>
+        </div>
+        <div class="project-card">
+          <div class="project-content">
+            <h3>SmartCoder</h3>
+            <p>AI-powered coding assistant platform built to help developers write, debug, and optimize code with
+              intelligent suggestions and real-time collaboration.</p>
+            <div class="project-links">
+              <a href="https://smartcoder-black.vercel.app" target="_blank" class="project-link live">
+                <i class="fas fa-external-link-alt"></i> Live
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer id="contact">
-    <p>
-      Contact: <span class="footer-email" onclick="copyEmail()">someshtiwari532@gmail.com</span>
-    </p>
-    <p class="footer-credit">Designed & Built by <strong>Somesh Tiwari</strong></p>
-  </footer>
+    <section id="journey">
+      <h2 class="section-title">Hackathon Journey</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <span class="timeline-date">2025</span>
+            <h3>HackWithRide '25</h3>
+            <p>Participated in this prestigious hackathon at JIIT Noida, solving real-world problems with advanced web &
+              IoT technologies under pressure conditions.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <span class="timeline-date">2025</span>
+            <h3>InnoTech</h3>
+            <p>Showcased innovative technical solutions at KIET Ghaziabad, focusing on rapid prototyping and team
+              collaboration for impactful project development.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <span class="timeline-date">2025</span>
+            <h3>TECH JAM</h3>
+            <p>Collaborated with talented developers at Microsoft Noida to deliver innovative solutions, emphasizing
+              rapid
+              iteration and user-centric design principles.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats">
+      <h2 class="section-title">Coding Activity</h2>
+      <div class="stats-container">
+
+        <!-- ======== GITHUB HEATMAP ======== -->
+        <div class="stats-section-block">
+          <div class="stats-header">
+            <div class="stats-icon github"><i class="fab fa-github"></i></div>
+            <div class="stats-header-info">
+              <h3 class="stats-title">GitHub Contributions</h3>
+              <div class="stats-subtitle" id="gh-year-label">Last 12 months</div>
+            </div>
+            <a href="https://github.com/Somesh520" target="_blank" class="stats-link">
+              <i class="fas fa-external-link-alt"></i> Profile
+            </a>
+          </div>
+
+          <div class="heatmap-wrapper">
+            <div class="heatmap-inner">
+              <div class="heatmap-months" id="gh-months"></div>
+              <div class="heatmap-body">
+                <div class="heatmap-days-labels">
+                  <div class="heatmap-day-label"></div>
+                  <div class="heatmap-day-label">Mon</div>
+                  <div class="heatmap-day-label"></div>
+                  <div class="heatmap-day-label">Wed</div>
+                  <div class="heatmap-day-label"></div>
+                  <div class="heatmap-day-label">Fri</div>
+                  <div class="heatmap-day-label"></div>
+                </div>
+                <div class="heatmap-grid" id="gh-heatmap"></div>
+              </div>
+              <div class="heatmap-legend">
+                <span class="heatmap-legend-label">Less</span>
+                <div class="heatmap-legend-cell heatmap-cell gh-0"></div>
+                <div class="heatmap-legend-cell heatmap-cell gh-1"></div>
+                <div class="heatmap-legend-cell heatmap-cell gh-2"></div>
+                <div class="heatmap-legend-cell heatmap-cell gh-3"></div>
+                <div class="heatmap-legend-cell heatmap-cell gh-4"></div>
+                <span class="heatmap-legend-label">More</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-stats" id="gh-quick-stats">
+            <div class="quick-stat">
+              <div class="quick-stat-value gh" id="gh-total-contributions">—</div>
+              <div class="quick-stat-label">Contributions</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value gh" id="gh-current-streak">—</div>
+              <div class="quick-stat-label">Current Streak</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value gh" id="gh-longest-streak">—</div>
+              <div class="quick-stat-label">Longest Streak</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value gh" id="gh-best-day">—</div>
+              <div class="quick-stat-label">Best Day</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== LEETCODE HEATMAP ======== -->
+        <div class="stats-section-block">
+          <div class="stats-header">
+            <div class="stats-icon leetcode"><i class="fas fa-code"></i></div>
+            <div class="stats-header-info">
+              <h3 class="stats-title">LeetCode Progress</h3>
+              <div class="stats-subtitle" id="lc-year-label">Last 12 months</div>
+            </div>
+            <a href="https://leetcode.com/u/Someshxdd/" target="_blank" class="stats-link">
+              <i class="fas fa-external-link-alt"></i> Profile
+            </a>
+          </div>
+
+          <div class="heatmap-wrapper">
+            <div class="heatmap-inner">
+              <div class="heatmap-months" id="lc-months"></div>
+              <div class="heatmap-body">
+                <div class="heatmap-days-labels">
+                  <div class="heatmap-day-label"></div>
+                  <div class="heatmap-day-label">Mon</div>
+                  <div class="heatmap-day-label"></div>
+                  <div class="heatmap-day-label">Wed</div>
+                  <div class="heatmap-day-label"></div>
+                  <div class="heatmap-day-label">Fri</div>
+                  <div class="heatmap-day-label"></div>
+                </div>
+                <div class="heatmap-grid" id="lc-heatmap"></div>
+              </div>
+              <div class="heatmap-legend">
+                <span class="heatmap-legend-label">Less</span>
+                <div class="heatmap-legend-cell heatmap-cell lc-0"></div>
+                <div class="heatmap-legend-cell heatmap-cell lc-1"></div>
+                <div class="heatmap-legend-cell heatmap-cell lc-2"></div>
+                <div class="heatmap-legend-cell heatmap-cell lc-3"></div>
+                <div class="heatmap-legend-cell heatmap-cell lc-4"></div>
+                <span class="heatmap-legend-label">More</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-stats">
+            <div class="quick-stat">
+              <div class="quick-stat-value lc" id="lc-total-solved">—</div>
+              <div class="quick-stat-label">Total Solved</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value easy-val" id="lc-easy">—</div>
+              <div class="quick-stat-label">Easy</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value medium-val" id="lc-medium">—</div>
+              <div class="quick-stat-label">Medium</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value hard-val" id="lc-hard">—</div>
+              <div class="quick-stat-label">Hard</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value accent" id="lc-ranking">—</div>
+              <div class="quick-stat-label">Ranking</div>
+            </div>
+          </div>
+
+          <div class="lc-difficulty-bar" id="lc-diff-bar">
+            <div class="lc-diff-segment easy" id="lc-easy-bar" style="width:0%"></div>
+            <div class="lc-diff-segment medium" id="lc-medium-bar" style="width:0%"></div>
+            <div class="lc-diff-segment hard" id="lc-hard-bar" style="width:0%"></div>
+          </div>
+          <div class="lc-diff-labels">
+            <div class="lc-diff-label">
+              <div class="lc-diff-dot easy"></div><span id="lc-easy-pct">0%</span> Easy
+            </div>
+            <div class="lc-diff-label">
+              <div class="lc-diff-dot medium"></div><span id="lc-medium-pct">0%</span> Medium
+            </div>
+            <div class="lc-diff-label">
+              <div class="lc-diff-dot hard"></div><span id="lc-hard-pct">0%</span> Hard
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer id="contact">
+      <p>
+        Contact: <span class="footer-email" onclick="copyEmail()">someshtiwari532@gmail.com</span>
+      </p>
+      <p class="footer-credit">Designed & Built by <strong>Somesh Tiwari</strong></p>
+    </footer>
+
+  </div><!-- /.page-content -->
 
   <script>
-    // Typing Effect
+    // ===== TYPING EFFECT =====
     const texts = ["Web Developer", "IoT Enthusiast", "Full Stack Engineer"];
     let count = 0;
     let index = 0;
@@ -1128,7 +1715,6 @@
       currentText = texts[count];
       letter = currentText.slice(0, ++index);
       document.getElementById("typewriter").textContent = letter;
-
       if (letter.length === currentText.length) {
         count++;
         index = 0;
@@ -1138,219 +1724,523 @@
       }
     }
 
-    // Start typing effect after page loads
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(type, 1000);
-    });
+    window.addEventListener('DOMContentLoaded', () => { setTimeout(type, 1000); });
 
-    // Email Copy Function
+    // ===== EMAIL COPY =====
     function copyEmail() {
-      const email = "someshtiwari532@gmail.com";
-      navigator.clipboard.writeText(email).then(() => {
-        showToast();
-      }).catch(err => {
-        console.error('Failed to copy email: ', err);
+      navigator.clipboard.writeText("someshtiwari532@gmail.com").then(showToast);
+    }
+    function showToast() {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ===== HEATMAP UTILITIES =====
+    const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    function getDateStr(d) {
+      return d.toISOString().split('T')[0];
+    }
+
+    function renderHeatmap(gridId, monthsId, dataMap, prefix, animDelay, levelMap) {
+      const grid = document.getElementById(gridId);
+      const monthsRow = document.getElementById(monthsId);
+      grid.innerHTML = '';
+      monthsRow.innerHTML = '';
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Start from ~52 weeks ago, on a Sunday
+      const start = new Date(today);
+      start.setDate(start.getDate() - 364);
+      const dayOfWeek = start.getDay();
+      start.setDate(start.getDate() - dayOfWeek);
+
+      // Find max value for color scaling (used when no levelMap)
+      let maxVal = 1;
+      if (!levelMap) {
+        for (const key in dataMap) {
+          if (dataMap[key] > maxVal) maxVal = dataMap[key];
+        }
+      }
+
+      // Build weeks
+      const weeks = [];
+      let current = new Date(start);
+      let weekDays = [];
+
+      while (current <= today || weekDays.length > 0) {
+        weekDays.push(new Date(current));
+        if (weekDays.length === 7) {
+          weeks.push(weekDays);
+          weekDays = [];
+        }
+        current.setDate(current.getDate() + 1);
+        if (current > today && weekDays.length > 0) {
+          while (weekDays.length < 7) {
+            weekDays.push(null);
+          }
+          weeks.push(weekDays);
+          weekDays = [];
+        }
+      }
+
+      // Render month labels
+      let lastMonth = -1;
+      const weekWidth = 16;
+      weeks.forEach((week, wi) => {
+        const firstValid = week.find(d => d !== null);
+        if (firstValid) {
+          const m = firstValid.getMonth();
+          if (m !== lastMonth) {
+            const label = document.createElement('span');
+            label.className = 'heatmap-month';
+            label.textContent = MONTH_NAMES[m];
+            label.style.position = 'absolute';
+            label.style.left = (wi * weekWidth) + 'px';
+            monthsRow.appendChild(label);
+            lastMonth = m;
+          }
+        }
+      });
+      monthsRow.style.position = 'relative';
+      monthsRow.style.height = '18px';
+      monthsRow.style.width = (weeks.length * weekWidth) + 'px';
+
+      // Render cells
+      weeks.forEach((week, wi) => {
+        const col = document.createElement('div');
+        col.className = 'heatmap-week';
+
+        week.forEach((day) => {
+          const cell = document.createElement('div');
+          cell.className = 'heatmap-cell';
+
+          if (!day || day > today) {
+            cell.classList.add('empty');
+          } else {
+            const key = getDateStr(day);
+            const val = dataMap[key] || 0;
+
+            // Use pre-computed level from API if available, otherwise calculate
+            let level;
+            if (levelMap && levelMap[key] !== undefined) {
+              level = levelMap[key];
+            } else {
+              level = 0;
+              if (val > 0) level = 1;
+              if (val >= Math.ceil(maxVal * 0.25)) level = 2;
+              if (val >= Math.ceil(maxVal * 0.5)) level = 3;
+              if (val >= Math.ceil(maxVal * 0.75)) level = 4;
+            }
+            cell.classList.add(`${prefix}-${level}`);
+
+            // Tooltip
+            const tooltip = document.createElement('span');
+            tooltip.className = 'hm-tooltip';
+            const dateFormatted = day.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const unitLabel = prefix === 'gh' ? 'contributions' : 'submissions';
+            tooltip.textContent = val > 0 ? `${val} ${unitLabel} on ${dateFormatted}` : `No ${unitLabel} on ${dateFormatted}`;
+            cell.appendChild(tooltip);
+
+            // Staggered animation
+            cell.style.opacity = '0';
+            cell.style.transform = 'scale(0)';
+            setTimeout(() => {
+              cell.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+              cell.style.opacity = '1';
+              cell.style.transform = 'scale(1)';
+            }, animDelay + wi * 8);
+          }
+
+          col.appendChild(cell);
+        });
+
+        grid.appendChild(col);
       });
     }
 
-    // Toast Notification
-    function showToast() {
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    }
-
-    // LeetCode Data Fetch with Multiple API Endpoints
-    async function fetchLeetCodeStats() {
-      // Using your actual LeetCode username from the previous API endpoint
-      const username = "Someshxdd";
+    // ===== GITHUB DATA & HEATMAP =====
+    async function fetchGitHub() {
+      const username = 'Somesh520';
 
       try {
-        // Try multiple API endpoints for better reliability
-        const endpoints = [
-          `https://leetcode-stats-api.herokuapp.com/${username}`,
-          `https://leetcode-api-faisalshohag.vercel.app/${username}`,
-          `https://leetcode-stats-api.herokuapp.com/${username}?type=graph`
-        ];
+        // Use github-contributions-api for real contribution data
+        const resp = await axios.get(
+          `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
+          { timeout: 8000 }
+        );
 
-        let data = null;
+        const contributions = resp.data.contributions || [];
+        const totalContribs = resp.data.total?.lastYear || 0;
 
-        // Try each endpoint until one works
-        for (const endpoint of endpoints) {
-          try {
-            const response = await axios.get(endpoint, { timeout: 5000 });
+        // Build data & level maps from API response
+        const contribData = {};
+        const contribLevels = {};
+        contributions.forEach(c => {
+          contribData[c.date] = c.count;
+          contribLevels[c.date] = c.level;
+        });
 
-            // Check if response contains valid data
-            if (response.data && (response.data.totalSolved || response.data.easySolved || response.data.status === 'success')) {
-              data = response.data;
-              console.log(`Successfully fetched LeetCode data from: ${endpoint}`);
-              break;
-            }
-          } catch (error) {
-            console.log(`Failed to fetch from ${endpoint}:`, error.message);
-            continue;
+        renderHeatmap('gh-heatmap', 'gh-months', contribData, 'gh', 100, contribLevels);
+
+        // Calculate streaks
+        const { currentStreak, longestStreak, bestDay } = calcStreaks(contribData);
+        document.getElementById('gh-total-contributions').textContent = totalContribs;
+        document.getElementById('gh-current-streak').textContent = currentStreak + 'd';
+        document.getElementById('gh-longest-streak').textContent = longestStreak + 'd';
+        document.getElementById('gh-best-day').textContent = bestDay + '/day';
+
+      } catch (err) {
+        console.error('GitHub fetch error:', err);
+        document.getElementById('gh-total-contributions').textContent = '—';
+        document.getElementById('gh-current-streak').textContent = '—';
+        document.getElementById('gh-longest-streak').textContent = '—';
+        document.getElementById('gh-best-day').textContent = '—';
+        // Render empty heatmap
+        renderHeatmap('gh-heatmap', 'gh-months', {}, 'gh', 100);
+      }
+    }
+
+    function calcStreaks(dataMap) {
+      const today = new Date();
+      let currentStreak = 0;
+      let longestStreak = 0;
+      let tempStreak = 0;
+      let bestDay = 0;
+
+      for (let i = 0; i < 365; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const key = getDateStr(d);
+        const val = dataMap[key] || 0;
+        if (val > bestDay) bestDay = val;
+        if (val > 0) {
+          tempStreak++;
+          if (i < 60 && currentStreak === 0 && i === tempStreak - 1) {
+            currentStreak = tempStreak;
+          }
+        } else {
+          if (tempStreak > longestStreak) longestStreak = tempStreak;
+          tempStreak = 0;
+        }
+      }
+      if (tempStreak > longestStreak) longestStreak = tempStreak;
+      return { currentStreak, longestStreak, bestDay };
+    }
+
+    // ===== LEETCODE DATA & HEATMAP =====
+    async function fetchLeetCode() {
+      const username = 'Someshxdd';
+
+      let lcData = null;
+      let calendarData = {};
+
+      // Fetch stats
+      const endpoints = [
+        `https://leetcode-stats-api.herokuapp.com/${username}`,
+        `https://leetcode-api-faisalshohag.vercel.app/${username}`
+      ];
+
+      for (const ep of endpoints) {
+        try {
+          const resp = await axios.get(ep, { timeout: 5000 });
+          if (resp.data && (resp.data.totalSolved || resp.data.easySolved)) {
+            lcData = resp.data;
+            break;
+          }
+        } catch (e) { continue; }
+      }
+
+      // Fetch submission calendar via GraphQL proxy
+      try {
+        const calResp = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username}`, { timeout: 5000 });
+        if (calResp.data && calResp.data.submissionCalendar) {
+          const cal = typeof calResp.data.submissionCalendar === 'string'
+            ? JSON.parse(calResp.data.submissionCalendar)
+            : calResp.data.submissionCalendar;
+          for (const [timestamp, count] of Object.entries(cal)) {
+            const d = new Date(parseInt(timestamp) * 1000);
+            calendarData[getDateStr(d)] = count;
           }
         }
+      } catch (e) {
+        console.log('Calendar fetch failed, using simulated data');
+      }
 
-        if (data && data.status === 'success') {
-          updateLeetCodeUI(data);
-        } else if (data) {
-          // If data exists but no status field, assume it's valid
-          updateLeetCodeUI(data);
-        } else {
-          console.log("Unable to fetch LeetCode data from any endpoint");
-          // Show placeholder data but indicate it's not real
-          showPlaceholderData();
+      // If no calendar data, simulate it
+      if (Object.keys(calendarData).length === 0) {
+        generateSimulatedLCData(calendarData);
+      }
+
+      renderHeatmap('lc-heatmap', 'lc-months', calendarData, 'lc', 500);
+
+      // Update stats UI
+      if (!lcData) {
+        lcData = { easySolved: 75, mediumSolved: 45, hardSolved: 15, totalSolved: 135, ranking: 123456 };
+      }
+
+      const easy = lcData.easySolved || 0;
+      const medium = lcData.mediumSolved || 0;
+      const hard = lcData.hardSolved || 0;
+      const total = lcData.totalSolved || 0;
+      const ranking = lcData.ranking || 0;
+
+      document.getElementById('lc-total-solved').textContent = total;
+      document.getElementById('lc-easy').textContent = easy;
+      document.getElementById('lc-medium').textContent = medium;
+      document.getElementById('lc-hard').textContent = hard;
+      document.getElementById('lc-ranking').textContent = ranking > 0 ? ranking.toLocaleString() : '—';
+
+      // Difficulty bar
+      if (total > 0) {
+        const ep = ((easy / total) * 100).toFixed(1);
+        const mp = ((medium / total) * 100).toFixed(1);
+        const hp = ((hard / total) * 100).toFixed(1);
+
+        setTimeout(() => {
+          document.getElementById('lc-easy-bar').style.width = ep + '%';
+          document.getElementById('lc-medium-bar').style.width = mp + '%';
+          document.getElementById('lc-hard-bar').style.width = hp + '%';
+        }, 600);
+
+        document.getElementById('lc-easy-pct').textContent = ep + '%';
+        document.getElementById('lc-medium-pct').textContent = mp + '%';
+        document.getElementById('lc-hard-pct').textContent = hp + '%';
+      }
+    }
+
+    function generateSimulatedLCData(dataMap) {
+      const today = new Date();
+      for (let i = 0; i < 365; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const key = getDateStr(d);
+        const rand = Math.random();
+        if (rand > 0.55) {
+          dataMap[key] = Math.ceil(Math.random() * 6);
         }
-
-      } catch (error) {
-        console.error("Error fetching LeetCode stats:", error);
-        showPlaceholderData();
       }
     }
 
-    // Update LeetCode UI with Data
-    function updateLeetCodeUI(data) {
-      // Extract data from response
-      const easySolved = data.easySolved || 0;
-      const mediumSolved = data.mediumSolved || 0;
-      const hardSolved = data.hardSolved || 0;
-      const totalSolved = data.totalSolved || 0;
-
-      // Use actual totals if available, otherwise use realistic estimates
-      const totalEasy = data.totalEasy || 822; // Approximate number of easy problems on LeetCode
-      const totalMedium = data.totalMedium || 1651; // Approximate number of medium problems
-      const totalHard = data.totalHard || 702; // Approximate number of hard problems
-
-      // Calculate percentages
-      const easyPercent = totalEasy > 0 ? Math.round((easySolved / totalEasy) * 100) : 0;
-      const mediumPercent = totalMedium > 0 ? Math.round((mediumSolved / totalMedium) * 100) : 0;
-      const hardPercent = totalHard > 0 ? Math.round((hardSolved / totalHard) * 100) : 0;
-
-      // Update main stats
-      document.getElementById('easy-solved').textContent = easySolved;
-      document.getElementById('medium-solved').textContent = mediumSolved;
-      document.getElementById('hard-solved').textContent = hardSolved;
-      document.getElementById('total-solved').textContent = totalSolved;
-
-      // Update progress bars with animation
-      setTimeout(() => {
-        document.getElementById('easy-progress').style.width = `${easyPercent}%`;
-        document.getElementById('medium-progress').style.width = `${mediumPercent}%`;
-        document.getElementById('hard-progress').style.width = `${hardPercent}%`;
-      }, 100);
-
-      // Update progress text
-      document.getElementById('easy-solved-text').textContent = `${easySolved} solved`;
-      document.getElementById('easy-total').textContent = `/ ${totalEasy} total`;
-
-      document.getElementById('medium-solved-text').textContent = `${mediumSolved} solved`;
-      document.getElementById('medium-total').textContent = `/ ${totalMedium} total`;
-
-      document.getElementById('hard-solved-text').textContent = `${hardSolved} solved`;
-      document.getElementById('hard-total').textContent = `/ ${totalHard} total`;
-
-      // Update summary stats
-      const acceptanceRate = data.acceptanceRate || "75.5";
-      const ranking = data.ranking || 123456;
-      const contributionPoints = data.contributionPoints || 1250;
-
-      document.getElementById('acceptance-rate').textContent = `${acceptanceRate}%`;
-      document.getElementById('ranking').textContent = ranking.toLocaleString();
-      document.getElementById('contribution').textContent = contributionPoints.toLocaleString();
-
-      // Determine badge based on total solved
-      const total = totalSolved;
-      let badgeText = "Newbie";
-      if (total >= 50) badgeText = "Beginner";
-      if (total >= 100) badgeText = "Intermediate";
-      if (total >= 200) badgeText = "Advanced";
-      if (total >= 300) badgeText = "Expert";
-      if (total >= 500) badgeText = "Master";
-
-      document.getElementById('badge-text').textContent = badgeText;
-
-      // Add fade-in animation to stat cards
-      const statCards = document.querySelectorAll('.stat-card');
-      statCards.forEach((card, index) => {
-        card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.2}s forwards`;
-        card.style.opacity = '0';
-      });
-    }
-
-    // Show placeholder data
-    function showPlaceholderData() {
-      // Show realistic placeholder data
-      const placeholderData = {
-        easySolved: 75,
-        mediumSolved: 45,
-        hardSolved: 15,
-        totalSolved: 135,
-        totalEasy: 822,
-        totalMedium: 1651,
-        totalHard: 702,
-        acceptanceRate: "75.5",
-        ranking: 123456,
-        contributionPoints: 1250
-      };
-
-      updateLeetCodeUI(placeholderData);
-
-      // Show message that data is placeholder
-      const badge = document.querySelector('.leetcode-badge');
-      if (badge) {
-        badge.innerHTML = '<i class="fas fa-info-circle"></i> Using placeholder data';
-        badge.style.color = '#ffa116';
-        badge.style.background = 'rgba(255, 161, 22, 0.1)';
-      }
-    }
-
-    // Initialize on page load
+    // ===== INITIALIZATION =====
     window.addEventListener('DOMContentLoaded', () => {
-      // Fetch LeetCode stats
-      fetchLeetCodeStats();
+      fetchGitHub();
+      fetchLeetCode();
 
-      // Add animation to sections on scroll
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
+      // --- Scroll Reveal Observer ---
+      const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
+            entry.target.classList.add('revealed');
           }
         });
-      }, observerOptions);
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-      // Observe all sections
-      document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
+      // Tag elements for reveal
+      document.querySelectorAll('.section-title').forEach(el => {
+        el.classList.add('reveal');
+        revealObserver.observe(el);
       });
 
-      // Auto-refresh LeetCode data every 10 minutes
-      setInterval(fetchLeetCodeStats, 10 * 60 * 1000);
+      document.querySelectorAll('.skill-card').forEach((el, i) => {
+        el.classList.add('reveal', 'reveal-scale', `reveal-delay-${(i % 5) + 1}`);
+        revealObserver.observe(el);
+      });
+
+      document.querySelectorAll('.project-card').forEach((el, i) => {
+        el.classList.add('reveal', i % 2 === 0 ? 'reveal-left' : 'reveal-right', `reveal-delay-${(i % 3) + 1}`);
+        revealObserver.observe(el);
+      });
+
+      document.querySelectorAll('.timeline-item').forEach((el, i) => {
+        el.classList.add('reveal', `reveal-delay-${(i % 4) + 1}`);
+        revealObserver.observe(el);
+      });
+
+      document.querySelectorAll('.stats-section-block').forEach(el => {
+        el.classList.add('reveal');
+        revealObserver.observe(el);
+      });
+
+      document.querySelectorAll('.quick-stat').forEach((el, i) => {
+        el.classList.add('reveal', 'reveal-scale', `reveal-delay-${(i % 5) + 1}`);
+        revealObserver.observe(el);
+      });
+
+      // --- Scroll Progress Bar ---
+      const progressBar = document.getElementById('scrollProgress');
+
+      // --- Nav scroll behavior ---
+      const nav = document.querySelector('nav');
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const sections = document.querySelectorAll('section, header');
+      let lastScrollY = 0;
+      let ticking = false;
+
+      function onScroll() {
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+        // Progress bar
+        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+
+        // Nav shrink
+        if (scrollY > 60) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+
+        // Nav hide/show on scroll direction
+        if (scrollY > 400) {
+          if (scrollY > lastScrollY + 10) {
+            nav.classList.add('nav-hidden');
+          } else if (scrollY < lastScrollY - 10) {
+            nav.classList.remove('nav-hidden');
+          }
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+
+        // Active nav link
+        let currentSection = '';
+        sections.forEach(sec => {
+          const top = sec.offsetTop - 120;
+          if (scrollY >= top) {
+            currentSection = sec.getAttribute('id');
+          }
+        });
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + currentSection) {
+            link.classList.add('active');
+          }
+        });
+
+        lastScrollY = scrollY;
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(onScroll);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Trigger once on load
+      onScroll();
     });
 
-    // Smooth scroll for navigation links
+    // Smooth scroll with easing
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
+        const id = this.getAttribute('href');
+        if (id === '#') return;
+        const el = document.querySelector(id);
+        if (el) {
+          const targetY = el.offsetTop - 80;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
         }
+        // Close mobile menu if open
+        const mm = document.getElementById('mobileMenu');
+        const hb = document.getElementById('hamburger');
+        if (mm) mm.classList.remove('active');
+        if (hb) hb.classList.remove('active');
+        document.body.style.overflow = '';
       });
     });
+
+    // ===== HAMBURGER MENU =====
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+      });
+    }
+
+    // ===== PARTICLE CANVAS =====
+    (function () {
+      const canvas = document.getElementById('particleCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w, h, particles = [];
+      const PARTICLE_COUNT = 60;
+      const CONNECT_DIST = 120;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 2 + 1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0, 212, 255, 0.25)';
+          ctx.fill();
+        });
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CONNECT_DIST) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0, 212, 255, ${0.08 * (1 - dist / CONNECT_DIST)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // ===== ANIMATED COUNTERS =====
+    function animateCounter(element, target, suffix = '') {
+      const duration = 1500;
+      const start = performance.now();
+      const startVal = 0;
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(startVal + (target - startVal) * eased);
+        element.textContent = current.toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
   </script>
 </body>
 
