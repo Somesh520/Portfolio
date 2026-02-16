@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Somesh Tiwari | Portfolio</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
   <style>
     /* --- CSS RESET & VARIABLES --- */
     :root {
@@ -23,21 +26,21 @@
       --danger: #ff4757;
       --github-green: #40c463;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       scroll-behavior: smooth;
     }
-    
+
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-main);
       line-height: 1.6;
       overflow-x: hidden;
-      background-image: 
+      background-image:
         radial-gradient(circle at 20% 30%, rgba(123, 97, 255, 0.1) 0%, transparent 20%),
         radial-gradient(circle at 80% 70%, rgba(0, 212, 255, 0.08) 0%, transparent 20%);
     }
@@ -62,7 +65,7 @@
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
-    
+
     #toast.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
@@ -83,7 +86,7 @@
       z-index: 1000;
       border-bottom: 1px solid var(--border);
     }
-    
+
     .logo {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.8rem;
@@ -91,12 +94,12 @@
       color: var(--primary);
       letter-spacing: -0.5px;
     }
-    
+
     .nav-links {
       display: flex;
       gap: 40px;
     }
-    
+
     .nav-links a {
       text-decoration: none;
       color: var(--text-sec);
@@ -106,7 +109,7 @@
       position: relative;
       padding: 8px 0;
     }
-    
+
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -117,11 +120,11 @@
       background: var(--primary);
       transition: width 0.3s ease;
     }
-    
+
     .nav-links a:hover {
       color: var(--text-main);
     }
-    
+
     .nav-links a:hover::after {
       width: 100%;
     }
@@ -137,7 +140,7 @@
       padding: 0 24px;
       padding-top: 120px;
     }
-    
+
     .profile-img-container {
       width: 140px;
       height: 140px;
@@ -145,7 +148,7 @@
       margin-bottom: 32px;
       position: relative;
     }
-    
+
     .profile-img-container::before {
       content: '';
       position: absolute;
@@ -156,7 +159,7 @@
       filter: blur(10px);
       animation: pulse 4s ease-in-out infinite;
     }
-    
+
     .profile-img {
       width: 100%;
       height: 100%;
@@ -165,7 +168,7 @@
       border: 3px solid rgba(255, 255, 255, 0.1);
       position: relative;
     }
-    
+
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 3.5rem;
@@ -176,7 +179,7 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    
+
     .typing-text {
       font-size: 1.25rem;
       color: var(--text-sec);
@@ -184,14 +187,14 @@
       min-height: 1.5em;
       font-weight: 500;
     }
-    
+
     .hero p {
       max-width: 500px;
       color: var(--text-sec);
       margin-bottom: 40px;
       font-size: 1.1rem;
     }
-    
+
     .cta-buttons {
       display: flex;
       gap: 20px;
@@ -199,7 +202,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
-    
+
     .btn {
       padding: 14px 32px;
       border-radius: 8px;
@@ -214,37 +217,37 @@
       border: none;
       font-family: 'Inter', sans-serif;
     }
-    
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
     }
-    
+
     .btn-primary:hover {
       transform: translateY(-3px);
       box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
     }
-    
+
     .btn-secondary {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-main);
       backdrop-filter: blur(10px);
     }
-    
+
     .btn-secondary:hover {
       border-color: var(--primary);
       transform: translateY(-3px);
       background: rgba(0, 212, 255, 0.05);
     }
-    
+
     .social-bar {
       display: flex;
       gap: 20px;
       margin-top: 40px;
     }
-    
+
     .social-btn {
       width: 44px;
       height: 44px;
@@ -258,7 +261,7 @@
       text-decoration: none;
       transition: all 0.3s ease;
     }
-    
+
     .social-btn:hover {
       color: var(--primary);
       border-color: var(--primary);
@@ -272,7 +275,7 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .section-title {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 2.25rem;
@@ -281,7 +284,7 @@
       margin-bottom: 60px;
       color: var(--text-main);
     }
-    
+
     .section-title::after {
       content: '';
       display: block;
@@ -300,7 +303,7 @@
       max-width: 800px;
       margin: 0 auto;
     }
-    
+
     .skill-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -313,18 +316,18 @@
       align-items: center;
       gap: 12px;
     }
-    
+
     .skill-card:hover {
       transform: translateY(-8px);
       border-color: var(--primary);
       box-shadow: 0 15px 40px rgba(0, 212, 255, 0.1);
     }
-    
+
     .skill-card i {
       font-size: 2.25rem;
       color: var(--primary);
     }
-    
+
     .skill-card span {
       font-size: 0.95rem;
       color: var(--text-sec);
@@ -337,7 +340,7 @@
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 30px;
     }
-    
+
     .project-card {
       background: var(--bg-card);
       border-radius: 16px;
@@ -345,17 +348,17 @@
       overflow: hidden;
       transition: all 0.3s ease;
     }
-    
+
     .project-card:hover {
       transform: translateY(-8px);
       border-color: var(--primary);
       box-shadow: 0 20px 50px rgba(0, 212, 255, 0.15);
     }
-    
+
     .project-content {
       padding: 32px;
     }
-    
+
     .project-content h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.5rem;
@@ -363,19 +366,19 @@
       margin-bottom: 16px;
       font-weight: 600;
     }
-    
+
     .project-content p {
       color: var(--text-sec);
       margin-bottom: 24px;
       font-size: 0.95rem;
       line-height: 1.7;
     }
-    
+
     .project-links {
       display: flex;
       gap: 12px;
     }
-    
+
     .project-link {
       padding: 10px 20px;
       border-radius: 6px;
@@ -387,19 +390,19 @@
       align-items: center;
       gap: 8px;
     }
-    
+
     .project-link.code {
       background: rgba(123, 97, 255, 0.1);
       color: var(--secondary);
       border: 1px solid rgba(123, 97, 255, 0.2);
     }
-    
+
     .project-link.live {
       background: rgba(0, 212, 255, 0.1);
       color: var(--primary);
       border: 1px solid rgba(0, 212, 255, 0.2);
     }
-    
+
     .project-link:hover {
       transform: translateY(-2px);
       filter: brightness(1.2);
@@ -411,7 +414,7 @@
       max-width: 700px;
       margin: 0 auto;
     }
-    
+
     .timeline::before {
       content: '';
       position: absolute;
@@ -421,13 +424,13 @@
       width: 2px;
       background: linear-gradient(to bottom, transparent, var(--primary), transparent);
     }
-    
+
     .timeline-item {
       position: relative;
       padding-left: 80px;
       margin-bottom: 40px;
     }
-    
+
     .timeline-item::before {
       content: '';
       position: absolute;
@@ -440,7 +443,7 @@
       border: 3px solid var(--bg-dark);
       z-index: 2;
     }
-    
+
     .timeline-content {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -448,12 +451,12 @@
       padding: 24px;
       transition: all 0.3s ease;
     }
-    
+
     .timeline-content:hover {
       border-color: var(--primary);
       transform: translateX(8px);
     }
-    
+
     .timeline-date {
       display: inline-block;
       padding: 6px 16px;
@@ -464,14 +467,14 @@
       font-weight: 500;
       margin-bottom: 16px;
     }
-    
+
     .timeline-content h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.25rem;
       margin-bottom: 12px;
       color: var(--text-main);
     }
-    
+
     .timeline-content p {
       color: var(--text-sec);
       font-size: 0.95rem;
@@ -485,11 +488,11 @@
       border: 1px solid var(--border);
       padding: 48px;
     }
-    
+
     .github-wrapper {
       margin-bottom: 60px;
     }
-    
+
     .stats-title {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.5rem;
@@ -498,26 +501,26 @@
       text-align: center;
       font-weight: 600;
     }
-    
+
     .gh-stats-card {
       max-width: 100%;
       border-radius: 12px;
       margin: 0 auto;
       display: block;
     }
-    
+
     .github-graph {
       width: 100%;
       height: auto;
       border-radius: 12px;
       margin-top: 32px;
     }
-    
+
     /* LeetCode Container */
     .leetcode-container {
       text-align: center;
     }
-    
+
     .leetcode-header {
       display: flex;
       align-items: center;
@@ -525,7 +528,7 @@
       gap: 15px;
       margin-bottom: 30px;
     }
-    
+
     .leetcode-icon {
       font-size: 2rem;
       color: #ffa116;
@@ -537,14 +540,14 @@
       align-items: center;
       justify-content: center;
     }
-    
+
     .leetcode-stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       margin-bottom: 40px;
     }
-    
+
     .stat-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -552,34 +555,42 @@
       padding: 25px;
       transition: all 0.3s ease;
     }
-    
+
     .stat-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 15px 40px rgba(0, 212, 255, 0.1);
     }
-    
+
     .stat-card.easy {
       border-color: rgba(0, 255, 157, 0.2);
     }
-    
+
     .stat-card.medium {
       border-color: rgba(255, 184, 0, 0.2);
     }
-    
+
     .stat-card.hard {
       border-color: rgba(255, 71, 87, 0.2);
     }
-    
+
     .stat-value {
       font-size: 2.5rem;
       font-weight: 700;
       margin: 10px 0;
     }
-    
-    .stat-value.easy { color: var(--success); }
-    .stat-value.medium { color: var(--warning); }
-    .stat-value.hard { color: var(--danger); }
-    
+
+    .stat-value.easy {
+      color: var(--success);
+    }
+
+    .stat-value.medium {
+      color: var(--warning);
+    }
+
+    .stat-value.hard {
+      color: var(--danger);
+    }
+
     .stat-label {
       font-size: 1rem;
       color: var(--text-sec);
@@ -587,11 +598,11 @@
       letter-spacing: 1px;
       font-weight: 500;
     }
-    
+
     .progress-container {
       margin-top: 10px;
     }
-    
+
     .progress-bar {
       height: 8px;
       background: rgba(255, 255, 255, 0.05);
@@ -599,17 +610,25 @@
       overflow: hidden;
       margin-top: 8px;
     }
-    
+
     .progress-fill {
       height: 100%;
       border-radius: 4px;
       transition: width 1.5s ease-out;
     }
-    
-    .progress-fill.easy { background: var(--success); }
-    .progress-fill.medium { background: var(--warning); }
-    .progress-fill.hard { background: var(--danger); }
-    
+
+    .progress-fill.easy {
+      background: var(--success);
+    }
+
+    .progress-fill.medium {
+      background: var(--warning);
+    }
+
+    .progress-fill.hard {
+      background: var(--danger);
+    }
+
     .progress-text {
       font-size: 0.85rem;
       color: var(--text-sec);
@@ -617,7 +636,7 @@
       display: flex;
       justify-content: space-between;
     }
-    
+
     .leetcode-summary {
       background: var(--bg-card);
       border-radius: 16px;
@@ -626,14 +645,14 @@
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 25px;
       margin-top: 20px;
     }
-    
+
     .summary-item {
       text-align: center;
       padding: 15px;
@@ -641,21 +660,21 @@
       border-radius: 12px;
       border: 1px solid var(--border);
     }
-    
+
     .summary-value {
       font-size: 2rem;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 5px;
     }
-    
+
     .summary-label {
       font-size: 0.9rem;
       color: var(--text-sec);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    
+
     .leetcode-badge {
       display: inline-flex;
       align-items: center;
@@ -677,121 +696,137 @@
       border-top: 1px solid var(--border);
       color: var(--text-sec);
     }
-    
+
     .footer-email {
       color: var(--primary);
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 500;
     }
-    
+
     .footer-email:hover {
       opacity: 0.8;
     }
-    
+
     .footer-credit {
       margin-top: 24px;
       font-size: 0.9rem;
       opacity: 0.6;
     }
-    
+
     /* --- ANIMATIONS --- */
     @keyframes pulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 0.8; }
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 0.8;
+      }
     }
-    
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-    
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
       nav {
         padding: 20px 24px;
       }
-      
+
       .nav-links {
         gap: 24px;
       }
-      
+
       .hero h1 {
         font-size: 2.5rem;
       }
-      
+
       .section-title {
         font-size: 2rem;
       }
-      
+
       .cta-buttons {
         flex-direction: column;
         align-items: center;
       }
-      
+
       .btn {
         width: 100%;
         max-width: 300px;
         justify-content: center;
       }
-      
+
       .timeline::before {
         left: 20px;
       }
-      
+
       .timeline-item {
         padding-left: 60px;
       }
-      
+
       .stats-container {
         padding: 32px 24px;
       }
-      
+
       .leetcode-stats-grid {
         grid-template-columns: 1fr;
         gap: 15px;
       }
-      
+
       .summary-grid {
         grid-template-columns: 1fr;
         gap: 15px;
       }
     }
-    
+
     @media (max-width: 480px) {
       .nav-links {
         display: none;
       }
-      
+
       .hero {
         padding-top: 100px;
       }
-      
+
       .skills-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-      
+
       .projects-grid {
         grid-template-columns: 1fr;
       }
-      
+
       .project-links {
         flex-direction: column;
       }
     }
   </style>
 </head>
+
 <body>
 
   <div id="toast">
@@ -836,6 +871,9 @@
       </a>
       <a href="https://x.com/SOMESHTIWA60883" target="_blank" class="social-btn">
         <i class="fa-brands fa-x-twitter"></i>
+      </a>
+      <a href="https://leetcode.com/u/Someshxdd/" target="_blank" class="social-btn">
+        <i class="fas fa-code"></i>
       </a>
     </div>
   </header>
@@ -884,7 +922,8 @@
       <div class="project-card">
         <div class="project-content">
           <h3>Smart Gas Guardian</h3>
-          <p>IoT solution for LPG monitoring with React Native & ESP32. Real-time tracking, leak detection, and safety alerts system.</p>
+          <p>IoT solution for LPG monitoring with React Native & ESP32. Real-time tracking, leak detection, and safety
+            alerts system.</p>
           <div class="project-links">
             <a href="https://github.com/Somesh520/LPG" target="_blank" class="project-link code">
               <i class="fab fa-github"></i> Code
@@ -895,7 +934,8 @@
       <div class="project-card">
         <div class="project-content">
           <h3>QuickShare</h3>
-          <p>Secure file-sharing platform with automatic 24-hour expiration. Built with MERN stack and end-to-end encryption.</p>
+          <p>Secure file-sharing platform with automatic 24-hour expiration. Built with MERN stack and end-to-end
+            encryption.</p>
           <div class="project-links">
             <a href="https://github.com/Somesh520/Quickshare" target="_blank" class="project-link code">
               <i class="fab fa-github"></i> Code
@@ -909,12 +949,25 @@
       <div class="project-card">
         <div class="project-content">
           <h3>BunkBook</h3>
-          <p>Smart attendance management system for students with lecture tracking, analytics, and schedule optimization.</p>
+          <p>Smart attendance management system for students with lecture tracking, analytics, and schedule
+            optimization.</p>
           <div class="project-links">
             <a href="https://github.com/Somesh520/Kietkt" target="_blank" class="project-link code">
               <i class="fab fa-github"></i> Code
             </a>
             <a href="https://bunkbook1.netlify.app" target="_blank" class="project-link live">
+              <i class="fas fa-external-link-alt"></i> Live
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-content">
+          <h3>SmartCoder</h3>
+          <p>AI-powered coding assistant platform built to help developers write, debug, and optimize code with
+            intelligent suggestions and real-time collaboration.</p>
+          <div class="project-links">
+            <a href="https://smartcoder-black.vercel.app" target="_blank" class="project-link live">
               <i class="fas fa-external-link-alt"></i> Live
             </a>
           </div>
@@ -930,21 +983,24 @@
         <div class="timeline-content">
           <span class="timeline-date">2025</span>
           <h3>HackWithRide '25</h3>
-          <p>Participated in this prestigious hackathon at JIIT Noida, solving real-world problems with advanced web & IoT technologies under pressure conditions.</p>
+          <p>Participated in this prestigious hackathon at JIIT Noida, solving real-world problems with advanced web &
+            IoT technologies under pressure conditions.</p>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content">
           <span class="timeline-date">2025</span>
           <h3>InnoTech</h3>
-          <p>Showcased innovative technical solutions at KIET Ghaziabad, focusing on rapid prototyping and team collaboration for impactful project development.</p>
+          <p>Showcased innovative technical solutions at KIET Ghaziabad, focusing on rapid prototyping and team
+            collaboration for impactful project development.</p>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content">
           <span class="timeline-date">2025</span>
           <h3>TECH JAM</h3>
-          <p>Collaborated with talented developers at Microsoft Noida to deliver innovative solutions, emphasizing rapid iteration and user-centric design principles.</p>
+          <p>Collaborated with talented developers at Microsoft Noida to deliver innovative solutions, emphasizing rapid
+            iteration and user-centric design principles.</p>
         </div>
       </div>
     </div>
@@ -957,14 +1013,16 @@
         <h3 class="stats-title">GitHub Contributions</h3>
         <a href="https://github.com/Somesh520" target="_blank">
           <!-- Changed to GitHub green color -->
-          <img class="gh-stats-card" src="https://github-readme-streak-stats.herokuapp.com/?user=Somesh520&theme=dark&background=11111f&ring=40c463&fire=40c463&currStreakNum=ffffff&currStreakLabel=40c463&sideNums=ffffff&sideLabels=ffffff&dates=a0a0c0&hide_border=true" alt="GitHub Streak" />
+          <img class="gh-stats-card"
+            src="https://github-readme-streak-stats.herokuapp.com/?user=Somesh520&theme=dark&background=11111f&ring=40c463&fire=40c463&currStreakNum=ffffff&currStreakLabel=40c463&sideNums=ffffff&sideLabels=ffffff&dates=a0a0c0&hide_border=true"
+            alt="GitHub Streak" />
         </a>
         <a href="https://github.com/Somesh520" target="_blank">
           <!-- Changed to GitHub green color -->
           <img src="https://ghchart.rshah.org/40c463/Somesh520" alt="GitHub Chart" class="github-graph" />
         </a>
       </div>
-      
+
       <div class="leetcode-container">
         <div class="leetcode-header">
           <div class="leetcode-icon">
@@ -972,7 +1030,7 @@
           </div>
           <h3 class="stats-title">LeetCode Progress</h3>
         </div>
-        
+
         <div class="leetcode-stats-grid">
           <div class="stat-card easy">
             <div class="stat-label">Easy</div>
@@ -987,7 +1045,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="stat-card medium">
             <div class="stat-label">Medium</div>
             <div class="stat-value medium" id="medium-solved">0</div>
@@ -1001,7 +1059,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="stat-card hard">
             <div class="stat-label">Hard</div>
             <div class="stat-value hard" id="hard-solved">0</div>
@@ -1016,7 +1074,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="leetcode-summary">
           <div class="summary-grid">
             <div class="summary-item">
@@ -1036,12 +1094,12 @@
               <div class="summary-label">Contribution</div>
             </div>
           </div>
-          
+
           <div class="leetcode-badge">
             <i class="fas fa-trophy"></i>
             <span id="badge-text">Knight Level</span>
           </div>
-          
+
           <div style="margin-top: 20px; color: var(--text-sec); font-size: 0.9rem;">
             <p>Updated in real-time from LeetCode API</p>
           </div>
@@ -1064,13 +1122,13 @@
     let index = 0;
     let currentText = "";
     let letter = "";
-    
+
     function type() {
       if (count === texts.length) count = 0;
       currentText = texts[count];
       letter = currentText.slice(0, ++index);
       document.getElementById("typewriter").textContent = letter;
-      
+
       if (letter.length === currentText.length) {
         count++;
         index = 0;
@@ -1079,7 +1137,7 @@
         setTimeout(type, 100);
       }
     }
-    
+
     // Start typing effect after page loads
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(type, 1000);
@@ -1094,7 +1152,7 @@
         console.error('Failed to copy email: ', err);
       });
     }
-    
+
     // Toast Notification
     function showToast() {
       const toast = document.getElementById('toast');
@@ -1107,8 +1165,8 @@
     // LeetCode Data Fetch with Multiple API Endpoints
     async function fetchLeetCodeStats() {
       // Using your actual LeetCode username from the previous API endpoint
-      const username = "zsH7Gq2PBq"; // This appears to be your LeetCode username based on previous code
-      
+      const username = "Someshxdd";
+
       try {
         // Try multiple API endpoints for better reliability
         const endpoints = [
@@ -1116,14 +1174,14 @@
           `https://leetcode-api-faisalshohag.vercel.app/${username}`,
           `https://leetcode-stats-api.herokuapp.com/${username}?type=graph`
         ];
-        
+
         let data = null;
-        
+
         // Try each endpoint until one works
         for (const endpoint of endpoints) {
           try {
             const response = await axios.get(endpoint, { timeout: 5000 });
-            
+
             // Check if response contains valid data
             if (response.data && (response.data.totalSolved || response.data.easySolved || response.data.status === 'success')) {
               data = response.data;
@@ -1135,7 +1193,7 @@
             continue;
           }
         }
-        
+
         if (data && data.status === 'success') {
           updateLeetCodeUI(data);
         } else if (data) {
@@ -1146,13 +1204,13 @@
           // Show placeholder data but indicate it's not real
           showPlaceholderData();
         }
-        
+
       } catch (error) {
         console.error("Error fetching LeetCode stats:", error);
         showPlaceholderData();
       }
     }
-    
+
     // Update LeetCode UI with Data
     function updateLeetCodeUI(data) {
       // Extract data from response
@@ -1160,49 +1218,49 @@
       const mediumSolved = data.mediumSolved || 0;
       const hardSolved = data.hardSolved || 0;
       const totalSolved = data.totalSolved || 0;
-      
+
       // Use actual totals if available, otherwise use realistic estimates
       const totalEasy = data.totalEasy || 822; // Approximate number of easy problems on LeetCode
       const totalMedium = data.totalMedium || 1651; // Approximate number of medium problems
       const totalHard = data.totalHard || 702; // Approximate number of hard problems
-      
+
       // Calculate percentages
       const easyPercent = totalEasy > 0 ? Math.round((easySolved / totalEasy) * 100) : 0;
       const mediumPercent = totalMedium > 0 ? Math.round((mediumSolved / totalMedium) * 100) : 0;
       const hardPercent = totalHard > 0 ? Math.round((hardSolved / totalHard) * 100) : 0;
-      
+
       // Update main stats
       document.getElementById('easy-solved').textContent = easySolved;
       document.getElementById('medium-solved').textContent = mediumSolved;
       document.getElementById('hard-solved').textContent = hardSolved;
       document.getElementById('total-solved').textContent = totalSolved;
-      
+
       // Update progress bars with animation
       setTimeout(() => {
         document.getElementById('easy-progress').style.width = `${easyPercent}%`;
         document.getElementById('medium-progress').style.width = `${mediumPercent}%`;
         document.getElementById('hard-progress').style.width = `${hardPercent}%`;
       }, 100);
-      
+
       // Update progress text
       document.getElementById('easy-solved-text').textContent = `${easySolved} solved`;
       document.getElementById('easy-total').textContent = `/ ${totalEasy} total`;
-      
+
       document.getElementById('medium-solved-text').textContent = `${mediumSolved} solved`;
       document.getElementById('medium-total').textContent = `/ ${totalMedium} total`;
-      
+
       document.getElementById('hard-solved-text').textContent = `${hardSolved} solved`;
       document.getElementById('hard-total').textContent = `/ ${totalHard} total`;
-      
+
       // Update summary stats
       const acceptanceRate = data.acceptanceRate || "75.5";
       const ranking = data.ranking || 123456;
       const contributionPoints = data.contributionPoints || 1250;
-      
+
       document.getElementById('acceptance-rate').textContent = `${acceptanceRate}%`;
       document.getElementById('ranking').textContent = ranking.toLocaleString();
       document.getElementById('contribution').textContent = contributionPoints.toLocaleString();
-      
+
       // Determine badge based on total solved
       const total = totalSolved;
       let badgeText = "Newbie";
@@ -1211,9 +1269,9 @@
       if (total >= 200) badgeText = "Advanced";
       if (total >= 300) badgeText = "Expert";
       if (total >= 500) badgeText = "Master";
-      
+
       document.getElementById('badge-text').textContent = badgeText;
-      
+
       // Add fade-in animation to stat cards
       const statCards = document.querySelectorAll('.stat-card');
       statCards.forEach((card, index) => {
@@ -1221,7 +1279,7 @@
         card.style.opacity = '0';
       });
     }
-    
+
     // Show placeholder data
     function showPlaceholderData() {
       // Show realistic placeholder data
@@ -1237,9 +1295,9 @@
         ranking: 123456,
         contributionPoints: 1250
       };
-      
+
       updateLeetCodeUI(placeholderData);
-      
+
       // Show message that data is placeholder
       const badge = document.querySelector('.leetcode-badge');
       if (badge) {
@@ -1248,18 +1306,18 @@
         badge.style.background = 'rgba(255, 161, 22, 0.1)';
       }
     }
-    
+
     // Initialize on page load
     window.addEventListener('DOMContentLoaded', () => {
       // Fetch LeetCode stats
       fetchLeetCodeStats();
-      
+
       // Add animation to sections on scroll
       const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
       };
-      
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -1267,12 +1325,12 @@
           }
         });
       }, observerOptions);
-      
+
       // Observe all sections
       document.querySelectorAll('section').forEach(section => {
         observer.observe(section);
       });
-      
+
       // Auto-refresh LeetCode data every 10 minutes
       setInterval(fetchLeetCodeStats, 10 * 60 * 1000);
     });
@@ -1283,7 +1341,7 @@
         e.preventDefault();
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
-        
+
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
           window.scrollTo({
@@ -1295,4 +1353,5 @@
     });
   </script>
 </body>
+
 </html>
