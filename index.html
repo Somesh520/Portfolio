@@ -671,6 +671,31 @@
       filter: brightness(1.2);
     }
 
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .project-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(var(--primary-rgb), 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .project-card.featured {
+      background: linear-gradient(145deg, rgba(15, 15, 35, 0.8), rgba(30, 30, 60, 0.4));
+      border-color: rgba(var(--primary-rgb), 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--primary-rgb), 0.1);
+    }
+
     /* --- TIMELINE --- */
     .timeline {
       position: relative;
@@ -742,6 +767,23 @@
       color: var(--text-sec);
       font-size: 0.95rem;
       line-height: 1.7;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .timeline-link {
+      color: var(--text-sec);
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+
+    .timeline-link:hover {
+      color: #0077b5; /* LinkedIn Color */
     }
 
     /* --- STATS --- */
@@ -1457,8 +1499,31 @@
     <section id="projects">
       <h2 class="section-title">Projects</h2>
       <div class="projects-grid">
+        <div class="project-card featured">
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">Firebase</span>
+              <span class="project-tag">Gemini API</span>
+              <span class="project-tag">React 2026</span>
+            </div>
+            <h3>JustAsk (AI Mentorship Platform)</h3>
+            <p>Engineered the core logic integrating the Google Gemini LLM via OpenRouter API for automated goal parsing and gap analysis. Designed and structured real-time NoSQL database schemas in Firebase to handle dynamic user roadmaps and state tracking.</p>
+            <div class="project-links">
+              <a href="https://justask-topaz.vercel.app/" target="_blank" class="project-link live">
+                <i class="fas fa-external-link-alt"></i> Live
+              </a>
+            </div>
+          </div>
+        </div>
         <div class="project-card">
           <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">React Native</span>
+              <span class="project-tag">ESP32</span>
+              <span class="project-tag">IoT</span>
+              <span class="project-tag">Firebase</span>
+            </div>
             <h3>Smart Gas Guardian</h3>
             <p>IoT solution for LPG monitoring with React Native & ESP32. Real-time tracking, leak detection, and safety
               alerts system.</p>
@@ -1471,6 +1536,12 @@
         </div>
         <div class="project-card">
           <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">MERN Stack</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">React</span>
+              <span class="project-tag">E2EE</span>
+            </div>
             <h3>QuickShare</h3>
             <p>Secure file-sharing platform with automatic 24-hour expiration. Built with MERN stack and end-to-end
               encryption.</p>
@@ -1486,6 +1557,11 @@
         </div>
         <div class="project-card">
           <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">React</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">Analytics</span>
+            </div>
             <h3>BunkBook</h3>
             <p>Smart attendance management system for students with lecture tracking, analytics, and schedule
               optimization.</p>
@@ -1501,6 +1577,11 @@
         </div>
         <div class="project-card">
           <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">AI</span>
+              <span class="project-tag">React</span>
+              <span class="project-tag">Gemini API</span>
+            </div>
             <h3>SmartCoder</h3>
             <p>AI-powered coding assistant platform built to help developers write, debug, and optimize code with
               intelligent suggestions and real-time collaboration.</p>
@@ -1519,7 +1600,36 @@
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-content">
-            <span class="timeline-date">2025</span>
+            <div class="timeline-header">
+              <span class="timeline-date">2026</span>
+              <a href="https://www.linkedin.com/posts/somesh-tiwari-236555322_developernight-applelab-innovation-activity-7425226941663936512-gnM7" target="_blank" class="timeline-link">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
+            <h3>Winners - Developers Night '26</h3>
+            <p>Secured the Winner position in <strong>Smart Campus & Student Life Solutions</strong> at Apple Centre of Excellence. A 24-hour innovation challenge focusing on rapid prototyping and mentorship-driven refinement.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date">2026</span>
+              <a href="https://www.linkedin.com/posts/somesh-tiwari-236555322_acehack5-mlh-buildpublic-activity-7438999567444107264-i_1X" target="_blank" class="timeline-link">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
+            <h3>Top 10 - ACEHACK 5.0</h3>
+            <p>Ranked in the <strong>Top 10 out of 140+ teams</strong> nationwide at UEM Jaipur. Led team 'Not_likeus' through 36 hours of high-intensity building, delivering a working prototype under MLH-standard pressure.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date">2025</span>
+              <a href="https://www.linkedin.com/posts/somesh-tiwari-236555322_ridehack25-jiitnoida-entrepreneurship-ugcPost-7397508777429618688-NTRD" target="_blank" class="timeline-link">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
             <h3>HackWithRide '25</h3>
             <p>Participated in this prestigious hackathon at JIIT Noida, solving real-world problems with advanced web &
               IoT technologies under pressure conditions.</p>
@@ -1527,7 +1637,12 @@
         </div>
         <div class="timeline-item">
           <div class="timeline-content">
-            <span class="timeline-date">2025</span>
+            <div class="timeline-header">
+              <span class="timeline-date">2025</span>
+              <a href="https://www.linkedin.com/posts/somesh-tiwari-236555322_innotech2025-kiet-automation-ugcPost-7400951192576634880-oRgi" target="_blank" class="timeline-link">
+                <i class="fab fa-linkedin"></i>
+              </a>
+            </div>
             <h3>InnoTech</h3>
             <p>Showcased innovative technical solutions at KIET Ghaziabad, focusing on rapid prototyping and team
               collaboration for impactful project development.</p>
@@ -1535,7 +1650,9 @@
         </div>
         <div class="timeline-item">
           <div class="timeline-content">
-            <span class="timeline-date">2025</span>
+            <div class="timeline-header">
+              <span class="timeline-date">2025</span>
+            </div>
             <h3>TECH JAM</h3>
             <p>Collaborated with talented developers at Microsoft Noida to deliver innovative solutions, emphasizing
               rapid
